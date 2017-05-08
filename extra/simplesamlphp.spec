@@ -40,8 +40,7 @@ SimpleSAMLphp is an award-winning application written in native PHP that deals w
 For further information, see the documentation at https://simplesamlphp.org/docs/.
 
 %prep
-
-%setup
+%setup -q -n %{name}-%{version}
 
 %build
 
@@ -49,9 +48,8 @@ For further information, see the documentation at https://simplesamlphp.org/docs
 mkdir -p %{buildroot}%{_prefix}simplesamlphp/log
 mkdir -p %{buildroot}%{_prefix}simplesamlphp/data
 mkdir -p %{buildroot}%{_prefix}simplesamlphp/cert
-install -d %{buildroot}%{_prefix}
 
-tar cf - . | (cd %{buildroot}%{_prefix}simplesamlphp; tar xfp -)
+cp -a * %{buildroot}%{_prefix}simplesamlphp
 
 %pre
    semanage fcontext -a -t httpd_sys_content_t '/var/lib/simplesamlphp(/.*)?'
@@ -75,12 +73,12 @@ tar cf - . | (cd %{buildroot}%{_prefix}simplesamlphp; tar xfp -)
 %files
 %defattr(-,root,root)
 /var/lib/simplesamlphp/
-#%dir %attr(0750, root,apache) /var/lib/simplesamlphp/config
+%dir %attr(0750, root,apache) /var/lib/simplesamlphp/config
 #%config(noreplace) %attr(0640, root,apache) /var/lib/simplesamlphp/config/acl.php
 #%config(noreplace) %attr(0640, root,apache) /var/lib/simplesamlphp/config/authmemcookie.php
 #%config(noreplace) %attr(0640, root,apache) /var/lib/simplesamlphp/config/authsources.php
 #%config(noreplace) %attr(0640, root,apache) /var/lib/simplesamlphp/config/config.php
-#%dir %attr(0750, root,apache) /var/lib/simplesamlphp/metadata
+%dir %attr(0750, root,apache) /var/lib/simplesamlphp/metadata
 #%config(noreplace) %attr(0640, root,apache) /var/lib/simplesamlphp/metadata/adfs-idp-hosted.php
 #%config(noreplace) %attr(0640, root,apache) /var/lib/simplesamlphp/metadata/adfs-sp-remote.php
 #%config(noreplace) %attr(0640, root,apache) /var/lib/simplesamlphp/metadata/saml20-idp-hosted.php
